@@ -1,0 +1,33 @@
+{
+  "name": "todo_sample",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "'"
+  },
+  "author": "dillon osman",
+  "license": "MIT",
+  "dependencies": {
+    "alt": "^0.17.9",
+    "handlebars": "^4.0.4",
+    "hapi": "^11.1.1",
+    "history": "^1.13.1",
+    "lodash": "^3.10.1",
+    "material-ui": "^0.14.4",
+    "react": "^0.14.2",
+    "react-addons-create-fragment": "^0.14.7",
+    "react-addons-pure-render-mixin": "^0.14.7",
+    "react-addons-transition-group": "^0.14.7",
+    "react-addons-update": "^0.14.7",
+    "react-dom": "^0.14.2",
+    "react-router": "^1.0.0",
+    "react-tap-event-plugin": "^0.2.2",
+    "superagent": "^1.4.0"
+  },
+  "devDependencies": {
+    "babel-core": "5.8.34",
+    "babel-loader": "5.4.0",
+    "webpack": "^1.12.6"
+  }
+}
