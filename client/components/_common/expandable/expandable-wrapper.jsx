@@ -1,3 +1,7 @@
+import React from 'react';
+import _     from 'lodash';
+import Style from './style/';
+
 export default class ExpandableWrapper extends React.Component{
   constructor(props, context){
     super(props, context);
@@ -7,32 +11,38 @@ export default class ExpandableWrapper extends React.Component{
     };
 
     //rebindings
+    this.handleExpansion = this.handleExpansion.bind(this);
+
   }
 
   render(){
+    let style = Style.styles;
+
     return (
-      <div className="expandable-wrapper" style={this.getStyle().wrapper}>
+      <div className="expandable-wrapper" style={_.merge({}, style.wrapper, this.props.style)}>
         {React.Children.map(this.props.children, (child)=>{
-          let newProps = {};
-          let doClone = false;
+          let newProps        = {};
+          let expandableChild = child;
+          let expandableType  = expandableChild.expandableType;
 
-          if(!child || !child.props){
-            return null;
+          newProps.expanded = this.state.expanded;
+
+          try{
+            if(expandableType = "header"){
+              newProps.onClick = this.handleExpansion;
+            }
+            else if(expandableType = "content"){
+
+            }
+            else{
+              expandableChild = null;
+            }
           }
-          if(!this.state.expanded && child.props.expandable){
-            return;
+          catch(err){
+            return console.error(err);
           }
 
-          if(child.props.actAsExpander){
-            doClone = true;
-            newProps.onClick = this.handleExpansion;
-            newProps.expanded = this.state.expanded;
-          }
-          if(child.props.expandable){
-            newProps.expanded = this.state.expanded;
-          }
-
-          return React.cloneElement(child, newProps);
+          return React.cloneElement(expandableChild, newProps);
         })}
       </div>
     )
@@ -44,15 +54,9 @@ export default class ExpandableWrapper extends React.Component{
     });
   }
 
-  getStyle(){
-    return {
-      "wrapper":{
-
-      }
-    }
-  }//getStyle()
 }//Wrapper
 
 ExpandableWrapper.defaultProps = {
-  expanded: null
+  expanded: null,
+  style: {},
 };

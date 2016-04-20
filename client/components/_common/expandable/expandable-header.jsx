@@ -1,6 +1,10 @@
 "use strict";
-import OpenIcon   from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-up.js';
-import CloseIcon  from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-down.js';
+import React      from 'react';
+//import _          from 'lodash';
+import Style      from './style/';
+
+//import OpenIcon   from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-up.js';
+import RightIcon  from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right.js'
 import IconButton from 'material-ui/lib/icon-button.js';
 
 export default class ExpandableHeader extends React.Component{
@@ -10,6 +14,8 @@ export default class ExpandableHeader extends React.Component{
     this.state = {
       expanded: typeof this.props.expanded == 'boolean' ? this.props.expanded : null
     };
+
+    this.expandableType = "header";
 
     //rebindings
     this.renderExpanderButton = this.renderExpanderButton.bind(this);
@@ -24,20 +30,16 @@ export default class ExpandableHeader extends React.Component{
   }
 
   render(){
-    let headerStyle = {
-      width: "100%",
-      display: this.state.expanded ? "block" : "none"
-    };
+    let style = Style.styles;
 
-    let headerTitleStyle = {
+    Style.setStyle('headerTitle',{
       width: this.props.actAsExpander ? "80%" : "100%",
-      float: this.props.actAsEpander ? "left" : "none",
-      padding: "2%"
-    };
+      float: this.props.actAsExpander ? "left" : "none"
+    });
 
     return (
-      <div className="expandable-header" style={headerStyle}>
-        <div className="expandable-header-title" style={headerTitleStyle}>
+      <div className="expandable-header" style={style.header}>
+        <div className="expandable-header-title" style={style.headerTitle}>
           {this.props.children}
         </div>
         {this.renderExpanderButton()}
@@ -46,19 +48,21 @@ export default class ExpandableHeader extends React.Component{
   }//render
 
   renderExpanderButton(){
+    let style = Style.styles;
     let to_return = null;
-    let headerButtonStyle = {
-      width: "20%",
-      float: "left"
-    };
+
+    Style.setStyle('headerIcon', {
+      transform: this.props.expanded ? 'rotate(90deg)' : 'rotate(0deg)'
+    });
 
     if(this.props.actAsExpander){
       to_return = (
-        <div className="expandable-header-button" style={headerButtonStyle}>
+        <div className="expandable-header-button" style={style.headerButton}>
           <IconButton
             onClick={this.props.onClick}
+            style={style.headerIcon}
             >
-            {this.state.expanded ? <OpenIcon /> : <CloseIcon />}
+            <RightIcon color={this.props.iconColor}/>
           </IconButton>
         </div>
       );
@@ -70,15 +74,14 @@ export default class ExpandableHeader extends React.Component{
 }//ExpandableHeader
 
 ExpandableHeader.propTypes = {
-  isOpen: React.PropTypes.bool,
+  type: React.PropTypes.string,
   actAsExpander: React.PropTypes.bool,
   expanded: React.PropTypes.bool.isRequired,
-  title: React.PropTypes.string
+  onClick: React.PropTypes.func
 };
 
 ExpandableHeader.defaultProps = {
-  isOpen: false,
+  type: "header",
   actAsExpander: true,
-  expanded: false,
-  title: ""
+  expanded: false
 };

@@ -1,5 +1,7 @@
 "use strict";
-import ContentWrapper   from '../_common/contentWrapper.jsx';
+import React            from 'react';
+
+import ContentWrapper   from '../_common/contentWrapper/';
 import TodoItem         from './todoItem.jsx';
 import TodoActions      from '../../actions/todo-actions.jsx';
 import TodoStore        from '../../stores/todo-store.jsx';
@@ -27,12 +29,10 @@ export default class Index extends React.Component{
     console.log("render function");
     return (
       <ContentWrapper wrapperClass="todos-wrapper" mainClass="todos-body" title="Kickass Todo List">
-        <ul>
           {this.state.todos.map((todo, i) => {
             let key = "todoItem-" + todo["_id"];
             return <TodoItem key={key} todo={todo} onEdit={this.updateTodoState} onDelete={this.handleDelete} onCheck={this.updateTodoState} />
           })}
-        </ul>
       </ContentWrapper>
     )
   }//render

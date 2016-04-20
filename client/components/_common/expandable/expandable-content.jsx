@@ -1,3 +1,7 @@
+import React from 'react';
+import _     from 'lodash';
+import Style from './style/';
+
 export default class ExpandableContent extends React.Component{
   constructor(props, context){
     super(props, context);
@@ -5,6 +9,8 @@ export default class ExpandableContent extends React.Component{
     this.state = {
       expanded: this.props.expanded ? this.props.expanded : null
     };
+    this.expandableType = "content";
+
   }
 
   componentWillReceiveProps(nextProps){
@@ -16,15 +22,23 @@ export default class ExpandableContent extends React.Component{
   }
 
   render(){
-    let style = {
-      width: "100%",
-      display: this.state.expanded ? "block" : "none"
-    };
+    let style = Style.styles;
+
+    Style.setStyle('content', {
+      maxHeight: this.state.expanded ? this.findMaxHeight() : "0px"
+    });
 
     return (
-      <div className="expandable-content" style={style}>
+      <div className="expandable-content" ref={'expandableContent'} style={style.content}>
         {this.props.children}
       </div>
     );
   }
-}
+
+  findMaxHeight(){
+    let content = this.refs.expandableContent;
+
+    return content.scrollHeight + "px";
+  }
+}//ExpandableContent
+

@@ -1,4 +1,6 @@
 "use strict";
+import React from 'react';
+
 export default class ContentWrapper extends React.Component{
   constructor(props, context){
     super(props, context);
@@ -9,7 +11,7 @@ export default class ContentWrapper extends React.Component{
   render(){
     return (
       <div className={"content-wrapper " + this.props.wrapperClass}>
-        <h3>{this.props.title}</h3>
+        {/*<h3>{this.props.title}</h3>*/}
         <div className={"content-main " + this.props.mainClass}>
           {this.props.children}
         </div>

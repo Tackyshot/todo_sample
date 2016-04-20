@@ -26,6 +26,7 @@ let webpackConfig = {
         NODE_ENV: JSON.stringify("development")
       },
       "React": 'react',
+      "react": 'react',
       'ReactDOM': 'react-dom',
       "_": 'lodash'
     })

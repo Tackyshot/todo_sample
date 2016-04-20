@@ -1,4 +1,9 @@
 "use strict";
+import React            from 'react';
+import _                from 'lodash';
+
+import Style            from './style/';
+
 import TodoActions      from '../../actions/todo-actions.jsx';
 import TodoStore        from '../../stores/todo-store.jsx';
 
@@ -12,7 +17,7 @@ import IconButton       from 'material-ui/lib/icon-button.js';
 import TextField        from 'material-ui/lib/text-field.js';
 
 import {
-  ExpandableWrapper,
+  Expandable,
   ExpandableHeader,
   ExpandableContent
   }                     from '../_common/expandable/';
@@ -62,66 +67,17 @@ export default class TodoItem extends React.Component{
   }
 
   render(){
+    let style             = Style.styles;
     let todoTitle         = this.getTitleArea();
     let todoDescription   = this.getDescriptionArea();
 
-    /*return(
-      <li>
-        <Card
-          onExpandChange={this.toggleExpansion}
-          >
-          <CardTitle
-            actAsExpander={true}
-            showExpandableButton={true}>
-            <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} label={todoTitle} style={{width:"80%"}} />
-          </CardTitle>
-          <CardText expandable={true}>
-            {todoDescription}
-          </CardText>
-          <CardAction expandable={true}>
-            <IconButton >
-              {this.state.editable ? <ContentCreate onClick={this.toggleEditableState}/> : <ContentSave onClick={this.handleSubmit} />}
-            </IconButton>
-
-            <IconButton onClick={this.handleDelete} >
-              <ActionDelete />
-            </IconButton>
-          </CardAction>
-        </Card>
-      </li>
-    );*/
-
-    /*return (
-      <Card initiallyExpanded={true} expanded={false}>
-        <CardHeader
-          title="Without Avatar"
-          subtitle="Subtitle"
-          actAsExpander={true}
-          showExpandableButton={true}
-          onExpandChange={()=>{
-            console.log("Change Expanded State");
-          }}
-          />
-        <CardText expandable={true}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-        </CardText>
-        <CardActions expandable={true}>
-          <FlatButton label="Action1"/>
-          <FlatButton label="Action2"/>
-        </CardActions>
-      </Card>
-    );*/
-
     return (
-      <ExpandableWrapper>
-        <ExpandableHeader actAsExpander={true} >
-          <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} label={todoTitle} style={{width:"80%"}} />
-          <p>{this.state.todo.title}</p>
+      <Expandable style={style.expandableStyle} >
+        <ExpandableHeader actAsExpander={true} iconColor={style.expandableIconColor} >
+          <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} label={todoTitle} style={{/*width:"80%"*/}} iconStyle={style.cbIconStyle} labelStyle={style.cbLabelStyle}/>
+          {/*<p>{this.state.todo.title}</p>*/}
         </ExpandableHeader>
-        <ExpandableContent expandable={true}>
+        <ExpandableContent expandable={true} >
           <div>
             <p>{this.state.todo.description}</p>
           </div>
@@ -131,11 +87,11 @@ export default class TodoItem extends React.Component{
             </IconButton>
 
             <IconButton onClick={this.handleDelete} >
-              <ActionDelete />
+              <ActionDelete color={'red'} />
             </IconButton>
           </div>
         </ExpandableContent>
-      </ExpandableWrapper>
+      </Expandable>
     )
 
     /*<div><Checkbox checked={this.state.todo.done} onCheck={this.props.onCheck} /></div>
@@ -205,6 +161,9 @@ export default class TodoItem extends React.Component{
       if(!err){
         this.toggleEditableState();
         this.props.onEdit();
+      }
+      else{
+        console.error("Submission Error: todoItem.jsx");
       }
     });
   }
