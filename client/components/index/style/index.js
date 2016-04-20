@@ -11,14 +11,29 @@ export default new class Style {
         borderColor: "#F07818"
       },
       expandableIconColor: theme.accentColor,
+      cbStyle :{
+        width: 'initial',
+        float: 'left',
+        display: 'inline-block'
+      },
       cbLabelStyle: { //'checkboxLabelStyle'
         fontFamily: "'Open Sans Condensed', sans-serif",
         fontSize: '2em',
-        color: theme.secondaryColor//"white"
+        display: 'inline-block',
+        float: 'left',
+        margin: '0',
+        color: theme.secondaryColor, //"white"
+        lineHeight: '75%'
       },
       cbIconStyle: {
-        fill: theme.accentColor//"white"
-      }
+        fill: theme.accentColor, //"white"
+        //width: '10%',
+        float: 'left'
+      },
+      contentArea: {
+        padding: '0px 3%'
+      },
+
     }//styles
   }//constructor
 

@@ -17,7 +17,8 @@ export default new class Style {
         display: 'block'
       },
       headerTitle:{
-        padding: '3%'
+        padding: '3%',
+        paddingRight: 0
       },
       headerButton: {
         float: 'right',
@@ -25,9 +26,6 @@ export default new class Style {
       },
       headerIcon:{
         transition: 'transform .3s ease'
-      },
-      hr:{
-        width: '98%'
       }
     }
   }

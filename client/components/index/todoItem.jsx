@@ -6,26 +6,16 @@ import Style            from './style/';
 
 import TodoActions      from '../../actions/todo-actions.jsx';
 import TodoStore        from '../../stores/todo-store.jsx';
-
-//material components
-import Card             from 'material-ui/lib/card/card.js';
-import CardTitle        from 'material-ui/lib/card/card-title.js';
-import CardText         from 'material-ui/lib/card/card-text.js';
-import CardActions      from 'material-ui/lib/card/card-actions.js';
-import Checkbox         from 'material-ui/lib/checkbox.js';
-import IconButton       from 'material-ui/lib/icon-button.js';
-import TextField        from 'material-ui/lib/text-field.js';
-
 import {
   Expandable,
   ExpandableHeader,
   ExpandableContent
   }                     from '../_common/expandable/';
-
-import ListItem         from 'material-ui/lib/lists/list-item';
-import CardHeader       from 'material-ui/lib/card/card-header.js';
-import FlatButton       from 'material-ui/lib/flat-button';
-
+import HideableMenu     from './hideableMenu/'
+//material components
+import Checkbox         from 'material-ui/lib/checkbox.js';
+import IconButton       from 'material-ui/lib/icon-button.js';
+import TextField        from 'material-ui/lib/text-field.js';
 //svg icons
 import ContentCreate    from 'material-ui/lib/svg-icons/content/create.js';
 import ContentSave      from 'material-ui/lib/svg-icons/content/save.js';
@@ -38,12 +28,13 @@ export default class TodoItem extends React.Component{
 
     this.state = {
       editable: false,
-      expanded: false,
+      menuVisibility: false,
       todo: {}
     };
 
     //rebindings
-    this.toggleExpansion          = this.toggleExpansion.bind(this);
+    this.toggleMenuOn             = this.toggleMenuOn.bind(this);
+    this.toggleMenuOff            = this.toggleMenuOff.bind(this);
     this.toggleEditableState      = this.toggleEditableState.bind(this);
     this.toggleDone               = this.toggleDone.bind(this);
     this.handleTitleChange        = this.handleTitleChange.bind(this);
@@ -67,49 +58,63 @@ export default class TodoItem extends React.Component{
   }
 
   render(){
-    let style             = Style.styles;
-    let todoTitle         = this.getTitleArea();
-    let todoDescription   = this.getDescriptionArea();
+    let style               = Style.styles;
+    let todoTitle           = this.getTitleArea();
+    let handleSubmit        = this.handleSubmit;
+    let toggleEditableState = this.toggleEditableState;
+    let todoDescription     = this.getDescriptionArea();
+
+    /*<div>
+     <IconButton >
+     {this.state.editable ? <ContentSave onClick={this.handleSubmit} /> : <ContentCreate onClick={this.toggleEditableState}/>}
+     </IconButton>
+
+     <IconButton onClick={this.handleDelete} >
+     <ActionDelete color={'red'} />
+     </IconButton>
+     </div>*/
 
     return (
-      <Expandable style={style.expandableStyle} >
-        <ExpandableHeader actAsExpander={true} iconColor={style.expandableIconColor} >
-          <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} label={todoTitle} style={{/*width:"80%"*/}} iconStyle={style.cbIconStyle} labelStyle={style.cbLabelStyle}/>
-          {/*<p>{this.state.todo.title}</p>*/}
-        </ExpandableHeader>
-        <ExpandableContent expandable={true} >
-          <div>
-            <p>{this.state.todo.description}</p>
-          </div>
-          <div>
-            <IconButton >
-              {this.state.editable ? <ContentCreate onClick={this.toggleEditableState}/> : <ContentSave onClick={this.handleSubmit} />}
-            </IconButton>
+      <div onMouseOver={this.toggleMenuOn} onMouseOut={this.toggleMenuOff}>
+        <HideableMenu visible={this.state.menuVisibility} >
+          <IconButton onClick={this.handleDelete} >
+            <ActionDelete color={'red'} />
+          </IconButton>
+          <IconButton onClick={(this.state.editable ? handleSubmit : toggleEditableState)}>
+            {this.state.editable ? <ContentSave /> : <ContentCreate />}
+          </IconButton>
+        </HideableMenu>
+        <Expandable style={style.expandableStyle} >
+          <ExpandableHeader actAsExpander={true} iconColor={style.expandableIconColor} >
+            <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} style={style.cbStyle} iconStyle={style.cbIconStyle}/>
+            {todoTitle}
+          </ExpandableHeader>
+          <ExpandableContent expandable={true} >
+            <div style={style.contentArea}>
+              <p>{this.state.todo.description}</p>
+            </div>
+          </ExpandableContent>
+        </Expandable>
+      </div>
+    );
 
-            <IconButton onClick={this.handleDelete} >
-              <ActionDelete color={'red'} />
-            </IconButton>
-          </div>
-        </ExpandableContent>
-      </Expandable>
-    )
-
-    /*<div><Checkbox checked={this.state.todo.done} onCheck={this.props.onCheck} /></div>
-     <div>{titleArea}</div>
-     <div>edit and delete bttns</div>
-     <div>dropdown description</div>*/
-
-  }
+  }//render
 
   //event handlers
-  toggleExpansion(){
-    console.log("ON EXPAND CHANGE");
+  toggleMenuOn(){
     this.setState({
-      expanded: !this.state.expanded
-    });
+      menuVisibility: true
+    })
+  }
+
+  toggleMenuOff(){
+    this.setState({
+      menuVisibility: false
+    })
   }
 
   toggleEditableState(){
+    console.log('toggle editable');
     this.setState({
       editable: !this.state.editable
     });
@@ -127,6 +132,9 @@ export default class TodoItem extends React.Component{
     }, (err)=>{
       if(!err) {
         this.props.onEdit();
+      }
+      else{
+        console.error("Toggle Done Error: todoItem.jsx", err);
       }
     });
   }
@@ -163,7 +171,7 @@ export default class TodoItem extends React.Component{
         this.props.onEdit();
       }
       else{
-        console.error("Submission Error: todoItem.jsx");
+        console.error("Data Submission Error: todoItem.jsx");
       }
     });
   }
@@ -175,13 +183,16 @@ export default class TodoItem extends React.Component{
 
   //conditional renderers
   getTitleArea(){
+    let style = Style.styles;
+
     if(this.state.editable){
       return <TextField value={this.state.todo.title}
                         onChange={this.handleTitleChange}
-                        fullWidth={true}/>
+                        fullWidth={true}
+                        style={style.cbLabelStyle}/>
     }
     else {
-      return this.state.todo.title
+      return <p style={style.cbLabelStyle}>{this.state.todo.title}</p>
     }
   }//getTitleArea
 
