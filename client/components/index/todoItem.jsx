@@ -86,8 +86,12 @@ export default class TodoItem extends React.Component{
         </HideableMenu>
         <Expandable style={style.expandableStyle} >
           <ExpandableHeader actAsExpander={true} iconColor={style.expandableIconColor} >
-            <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} style={style.cbStyle} iconStyle={style.cbIconStyle}/>
-            {todoTitle}
+            <div style={{display: 'inline-block', verticalAlign: 'top'}}>
+              <Checkbox checked={this.state.todo.done} onCheck={this.toggleDone} style={style.cbStyle} iconStyle={style.cbIconStyle}/>
+            </div>
+            <div style={{width:'78%', display: 'inline-block', /*paddingLeft: '5%'*/}}>
+              {todoTitle}
+            </div>
           </ExpandableHeader>
           <ExpandableContent expandable={true} >
             <div style={style.contentArea}>

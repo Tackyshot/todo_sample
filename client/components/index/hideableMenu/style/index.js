@@ -37,8 +37,7 @@ export default new class Style {
 
   setStyle(key, valueObj){
     try{
-      _.merge(this.styles[key], valueObj);
-      return true;
+      return _.merge(_.clone(this.styles[key], true), valueObj);
     }
     catch(err){
       console.error("Expandable Styles Error:", err);

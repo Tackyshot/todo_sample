@@ -18,11 +18,13 @@ export default new class Style {
       },
       headerTitle:{
         padding: '3%',
-        paddingRight: 0
+        paddingRight: 0,
+        display: 'inline-block'
       },
       headerButton: {
         float: 'right',
-        padding: '2%'
+        padding: '2% 0',
+        display: 'inline-block'
       },
       headerIcon:{
         transition: 'transform .3s ease'
@@ -32,8 +34,7 @@ export default new class Style {
 
   setStyle(key, valueObj){
     try{
-      _.merge(this.styles[key], valueObj);
-      return true;
+      return _.merge(_.clone(this.styles[key], true), valueObj);
     }
     catch(err){
       console.error("Expandable Styles Error:", err);

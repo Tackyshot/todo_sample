@@ -33,7 +33,7 @@ export default class ExpandableHeader extends React.Component{
     let style = Style.styles;
 
     Style.setStyle('headerTitle',{
-      width: this.props.actAsExpander ? "80%" : "100%",
+      width: this.props.actAsExpander ? "75%" : "100%",
       float: this.props.actAsExpander ? "left" : "none"
     });
 

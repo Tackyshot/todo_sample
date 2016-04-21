@@ -17,7 +17,6 @@ export default new class Style {
         display: 'inline-block'
       },
       cbLabelStyle: { //'checkboxLabelStyle'
-        width: '89%',
         fontFamily: "'Open Sans Condensed', sans-serif",
         fontSize: '2em',
         display: 'inline-block',
@@ -28,7 +27,6 @@ export default new class Style {
       },
       cbIconStyle: {
         fill: theme.accentColor, //"white"
-        //width: '10%',
         float: 'left'
       },
       contentArea: {
@@ -40,8 +38,7 @@ export default new class Style {
 
   setStyle(key, valueObj){
     try{
-      _.merge(this.styles[key], valueObj);
-      return true;
+      return _.merge(_.clone(this.styles[key], true), valueObj);
     }
     catch(err){
       console.error("Expandable Styles Error:", err);
