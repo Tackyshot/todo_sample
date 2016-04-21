@@ -27,10 +27,10 @@ export default class HideableMenu extends React.Component{
   render(){
     let style       = Style.styles;
     //let visibility  = this.state.visible ? style.visibleMenu : style.hiddenMenu;
-    Style.setStyle('hideableMenu', this.state.visible ? style.visibleMenu : style.hiddenMenu);
+    let hideableMenu = Style.setStyle('hideableMenu', this.state.visible ? style.visibleMenu : style.hiddenMenu);
 
     return (
-      <div style={style.hideableMenu}>
+      <div style={hideableMenu}>
         <div style={style.menuContent}>
           {this.props.children}
         </div>

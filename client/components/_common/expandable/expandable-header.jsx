@@ -32,14 +32,14 @@ export default class ExpandableHeader extends React.Component{
   render(){
     let style = Style.styles;
 
-    Style.setStyle('headerTitle',{
+    let headerTitle = Style.setStyle('headerTitle',{
       width: this.props.actAsExpander ? "75%" : "100%",
       float: this.props.actAsExpander ? "left" : "none"
     });
 
     return (
       <div className="expandable-header" style={style.header}>
-        <div className="expandable-header-title" style={style.headerTitle}>
+        <div className="expandable-header-title" style={headerTitle}>
           {this.props.children}
         </div>
         {this.renderExpanderButton()}
@@ -51,7 +51,7 @@ export default class ExpandableHeader extends React.Component{
     let style = Style.styles;
     let to_return = null;
 
-    Style.setStyle('headerIcon', {
+    let headerIcon = Style.setStyle('headerIcon', {
       transform: this.props.expanded ? 'rotate(90deg)' : 'rotate(0deg)'
     });
 
@@ -60,7 +60,7 @@ export default class ExpandableHeader extends React.Component{
         <div className="expandable-header-button" style={style.headerButton}>
           <IconButton
             onClick={this.props.onClick}
-            style={style.headerIcon}
+            style={headerIcon}
             >
             <RightIcon color={this.props.iconColor}/>
           </IconButton>

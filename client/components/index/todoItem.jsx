@@ -196,11 +196,11 @@ export default class TodoItem extends React.Component{
                         style={style.cbLabelStyle}/>
     }
     else {
-      Style.setStyle('cbLabelStyle', {
+      let cbLabelStyle = Style.setStyle('cbLabelStyle', {
         textDecoration: this.state.todo.done ? 'line-through' : 'none'
       });
 
-      return <p style={style.cbLabelStyle}>{this.state.todo.title}</p>
+      return <p style={cbLabelStyle}>{this.state.todo.title}</p>
     }
   }//getTitleArea
 

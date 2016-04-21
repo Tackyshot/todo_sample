@@ -45507,13 +45507,13 @@
 	          fullWidth: true,
 	          style: style.cbLabelStyle });
 	      } else {
-	        _style2['default'].setStyle('cbLabelStyle', {
+	        var cbLabelStyle = _style2['default'].setStyle('cbLabelStyle', {
 	          textDecoration: this.state.todo.done ? 'line-through' : 'none'
 	        });
 
 	        return _react2['default'].createElement(
 	          'p',
-	          { style: style.cbLabelStyle },
+	          { style: cbLabelStyle },
 	          this.state.todo.title
 	        );
 	      }
@@ -49130,7 +49130,7 @@
 	    value: function render() {
 	      var style = _style2['default'].styles;
 
-	      _style2['default'].setStyle('headerTitle', {
+	      var headerTitle = _style2['default'].setStyle('headerTitle', {
 	        width: this.props.actAsExpander ? "75%" : "100%",
 	        float: this.props.actAsExpander ? "left" : "none"
 	      });
@@ -49140,7 +49140,7 @@
 	        { className: 'expandable-header', style: style.header },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'expandable-header-title', style: style.headerTitle },
+	          { className: 'expandable-header-title', style: headerTitle },
 	          this.props.children
 	        ),
 	        this.renderExpanderButton()
@@ -49154,7 +49154,7 @@
 	      var style = _style2['default'].styles;
 	      var to_return = null;
 
-	      _style2['default'].setStyle('headerIcon', {
+	      var headerIcon = _style2['default'].setStyle('headerIcon', {
 	        transform: this.props.expanded ? 'rotate(90deg)' : 'rotate(0deg)'
 	      });
 
@@ -49166,7 +49166,7 @@
 	            _materialUiLibIconButtonJs2['default'],
 	            {
 	              onClick: this.props.onClick,
-	              style: style.headerIcon
+	              style: headerIcon
 	            },
 	            _react2['default'].createElement(_materialUiLibSvgIconsHardwareKeyboardArrowRightJs2['default'], { color: this.props.iconColor })
 	          )
@@ -49298,15 +49298,13 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var style = _style2['default'].styles;
-
-	      _style2['default'].setStyle('content', {
+	      var content = _style2['default'].setStyle('content', {
 	        maxHeight: this.state.expanded ? this.findMaxHeight() : "0px"
 	      });
 
 	      return _react2['default'].createElement(
 	        'div',
-	        { className: 'expandable-content', ref: 'expandableContent', style: style.content },
+	        { className: 'expandable-content', ref: 'expandableContent', style: content },
 	        this.props.children
 	      );
 	    }
@@ -49388,11 +49386,11 @@
 	    value: function render() {
 	      var style = _style2['default'].styles;
 	      //let visibility  = this.state.visible ? style.visibleMenu : style.hiddenMenu;
-	      _style2['default'].setStyle('hideableMenu', this.state.visible ? style.visibleMenu : style.hiddenMenu);
+	      var hideableMenu = _style2['default'].setStyle('hideableMenu', this.state.visible ? style.visibleMenu : style.hiddenMenu);
 
 	      return _react2['default'].createElement(
 	        'div',
-	        { style: style.hideableMenu },
+	        { style: hideableMenu },
 	        _react2['default'].createElement(
 	          'div',
 	          { style: style.menuContent },

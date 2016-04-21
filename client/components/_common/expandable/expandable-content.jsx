@@ -22,14 +22,12 @@ export default class ExpandableContent extends React.Component{
   }
 
   render(){
-    let style = Style.styles;
-
-    Style.setStyle('content', {
+    let content = Style.setStyle('content', {
       maxHeight: this.state.expanded ? this.findMaxHeight() : "0px"
     });
 
     return (
-      <div className="expandable-content" ref={'expandableContent'} style={style.content}>
+      <div className="expandable-content" ref={'expandableContent'} style={content}>
         {this.props.children}
       </div>
     );
