@@ -17,6 +17,7 @@ export default new class Style {
         display: 'inline-block'
       },
       cbLabelStyle: { //'checkboxLabelStyle'
+        width: '89%',
         fontFamily: "'Open Sans Condensed', sans-serif",
         fontSize: '2em',
         display: 'inline-block',

@@ -8,7 +8,7 @@ export default new class Style {
     this.styles = {
       hideableMenu:{
         position: 'absolute',
-        left: '19.4%',
+        right: '75%',
         marginTop: '1%',
       },
       hiddenMenu: {

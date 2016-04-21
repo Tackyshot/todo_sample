@@ -91,7 +91,7 @@ export default class TodoItem extends React.Component{
           </ExpandableHeader>
           <ExpandableContent expandable={true} >
             <div style={style.contentArea}>
-              <p>{this.state.todo.description}</p>
+              {todoDescription}
             </div>
           </ExpandableContent>
         </Expandable>
@@ -192,6 +192,10 @@ export default class TodoItem extends React.Component{
                         style={style.cbLabelStyle}/>
     }
     else {
+      Style.setStyle('cbLabelStyle', {
+        textDecoration: this.state.todo.done ? 'line-through' : 'none'
+      });
+
       return <p style={style.cbLabelStyle}>{this.state.todo.title}</p>
     }
   }//getTitleArea
@@ -205,7 +209,7 @@ export default class TodoItem extends React.Component{
                         rows={3}/>
     }
     else{
-      return this.state.todo.description
+      return <p>{this.state.todo.description}</p>
     }
   }
 
