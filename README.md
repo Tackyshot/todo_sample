@@ -4,7 +4,7 @@ A simple todo list built as an introduction to Node.js and React.js.
 
 ## Setup:
 
-to get this todo list running in your own environment follow the following steps.
+To get this todo list running in your own environment follow the following steps.
 
 1. Checkout this repository to your machine.
 2. Make sure you're running Node v5.1.0 or later. an easy way to manage your node versions is via NVM found [Here](https://github.com/creationix/nvm)
@@ -20,3 +20,4 @@ to get this todo list running in your own environment follow the following steps
 
 1. This example application does not use a database, but a plain text file loaded into the application memory at run time. It was done intentionally in an effort to make setup and execution quick and easy. Because the text file is loaded into memory at runtime and is mutated in memory only, it will not persist through server restarts.
 2. React router is used in this application. Even though there is only one route, the routes file can be easily edited to add more routes and features.
+3. Currently there is no testing environment, but it will be added at a later point in an effort to help introduce proper test practices in Node and React.
