@@ -6,6 +6,9 @@ import TodoItem         from './todoItem.jsx';
 import TodoActions      from '../../actions/todo-actions.jsx';
 import TodoStore        from '../../stores/todo-store.jsx';
 
+import FlatButton       from 'material-ui/lib/flat-button.js';
+import AddIcon          from 'material-ui/lib/svg-icons/content/add.js';
+
 export default class Index extends React.Component{
   constructor(props, context){
     super(props, context);
@@ -14,7 +17,9 @@ export default class Index extends React.Component{
       todos: []
     };
 
-    this.updateTodoState = this.updateTodoState.bind(this);
+    //rebindings
+    this.updateTodoState  = this.updateTodoState.bind(this);
+    this.handleNewTodo    = this.handleNewTodo.bind(this);
   }
 
   componentWillMount(){
@@ -29,6 +34,14 @@ export default class Index extends React.Component{
     console.log("render function");
     return (
       <ContentWrapper wrapperClass="todos-wrapper" mainClass="todos-body" title="Kickass Todo List">
+          <div>
+            <FlatButton
+              label="New Todo"
+              icon={<AddIcon />}
+              style={{color: '#D98310', marginBottom: '15px'}}
+              onClick={this.handleNewTodo}
+            />
+          </div>
           {this.state.todos.map((todo, i) => {
             let key = "todoItem-" + todo["_id"];
             return <TodoItem key={key} todo={todo} onEdit={this.updateTodoState} onDelete={this.handleDelete} onCheck={this.updateTodoState} />
@@ -55,6 +68,21 @@ export default class Index extends React.Component{
         this.updateTodoState();
       }
     });
+  }
+
+  handleNewTodo(e){
+    TodoActions.post({
+      data:{
+        _id: -1,
+        title: '',
+        description: '',
+        done: false
+      }
+    }, (err)=>{
+      if(!err){
+        this.updateTodoState();
+      }
+    })
   }
 
 }

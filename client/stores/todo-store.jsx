@@ -5,8 +5,9 @@ import _            from 'lodash';
 class TodoStore {
   constructor(){
     this.bindListeners({
-      set: [TodoActions.get, TodoActions.post],
-      update: TodoActions.put,
+      set: TodoActions.get,
+      post: TodoActions.post,
+      put: TodoActions.put,
       del: TodoActions.del
     });
 
@@ -23,7 +24,7 @@ class TodoStore {
     }
   }//set
 
-  /*add(todo){
+  post(todo){
     let clone = _.clone(this.state.todos, true);
 
     clone.push(todo);
@@ -31,9 +32,9 @@ class TodoStore {
     this.setState({
       todos: clone
     });
-  }//add*/
+  }//post
 
-  update(todo){
+  put(todo){
     if(todo !== null) {
       let clone = _.clone(this.state.todos, true);
 
@@ -48,7 +49,7 @@ class TodoStore {
         todos: clone
       });
     }
-  }//update
+  }//put
 
   del(todo){
     if(todo !== null) {
