@@ -29,7 +29,6 @@ class TodoActions {
         .send(data)
         .set('Accept', 'application/json')
         .end((err, res)=>{
-          console.log("POST RES:", JSON.parse(res.text));
           let toDispatch = !err ? JSON.parse(res.text) : null;
           dispatch(toDispatch);
           callback(err);
@@ -48,7 +47,6 @@ class TodoActions {
         .send(data)
         .set('Accept', 'application/json')
         .end((err, res)=>{
-          console.log("PUT RES:", JSON.parse(res.text));
           let toDispatch = !err ? JSON.parse(res.text) : null;
           dispatch(toDispatch);
           callback(err);

@@ -26,7 +26,6 @@ class TodoStore {
 
   post(todo){
     let clone = _.clone(this.state.todos, true);
-
     clone.push(todo);
 
     this.setState({

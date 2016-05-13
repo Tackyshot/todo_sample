@@ -64,16 +64,6 @@ export default class TodoItem extends React.Component{
     let toggleEditableState = this.toggleEditableState;
     let todoDescription     = this.getDescriptionArea();
 
-    /*<div>
-     <IconButton >
-     {this.state.editable ? <ContentSave onClick={this.handleSubmit} /> : <ContentCreate onClick={this.toggleEditableState}/>}
-     </IconButton>
-
-     <IconButton onClick={this.handleDelete} >
-     <ActionDelete color={'red'} />
-     </IconButton>
-     </div>*/
-
     return (
       <div onMouseOver={this.toggleMenuOn} onMouseOut={this.toggleMenuOff}>
         <HideableMenu visible={this.state.menuVisibility} >
@@ -118,28 +108,8 @@ export default class TodoItem extends React.Component{
   }
 
   toggleEditableState(){
-    console.log('toggle editable');
     this.setState({
       editable: !this.state.editable
-    });
-  }
-
-  toggleDone(){
-    let clone = _.clone(this.state.todo, true);
-
-    clone.done = !this.state.todo.done;
-    TodoActions.put({
-      params: {
-        todoId: this.state.todo['_id']
-      },
-      data: clone
-    }, (err)=>{
-      if(!err) {
-        this.props.onEdit();
-      }
-      else{
-        console.error("Toggle Done Error: todoItem.jsx", err);
-      }
     });
   }
 
@@ -157,9 +127,28 @@ export default class TodoItem extends React.Component{
     let clone = _.clone(this.state.todo, true);
 
     clone.description = e.target.value;
-
     this.setState({
       todo: clone
+    });
+  }
+
+  /*FLUX MUTATORS*/
+  toggleDone(){
+    let clone = _.clone(this.state.todo, true);
+
+    clone.done = !this.state.todo.done;
+    TodoActions.put({
+      params: {
+        todoId: this.state.todo['_id']
+      },
+      data: clone
+    }, (err)=>{
+      if(!err) {
+        this.props.eventCallback();
+      }
+      else{
+        console.error("Toggle Done Error: todoItem.jsx", err);
+      }
     });
   }
 
@@ -172,7 +161,7 @@ export default class TodoItem extends React.Component{
     }, (err)=>{
       if(!err){
         this.toggleEditableState();
-        this.props.onEdit();
+        this.props.eventCallback();
       }
       else{
         console.error("Data Submission Error: todoItem.jsx");
@@ -181,11 +170,23 @@ export default class TodoItem extends React.Component{
   }
 
   handleDelete(){
-
-    this.props.onDelete(this.state.todo);
+    TodoActions.del({
+      params: {
+        todoId: this.state.todo['_id']
+      },
+      data: this.state.todo
+    }, (err)=>{
+      if(!err) {
+        this.props.eventCallback();
+      }
+      else{
+        console.error("Toggle Done Error: todoItem.jsx", err);
+      }
+    });
+    //this.props.onDelete(this.state.todo);
   }
 
-  //conditional renderers
+  /* CONDITIONAL RENDERERS */
   getTitleArea(){
     let style = Style.styles;
 
@@ -221,9 +222,7 @@ export default class TodoItem extends React.Component{
 
 TodoItem.propTypes = {
   todo: React.PropTypes.object.isRequired,
-  onEdit: React.PropTypes.func.isRequired,
-  onDelete: React.PropTypes.func.isRequired,
-  onCheck: React.PropTypes.func.isRequired
+  eventCallback: React.PropTypes.func.isRequired,
 };
 
 TodoItem.defaultProps = {

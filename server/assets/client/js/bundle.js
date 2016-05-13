@@ -45064,6 +45064,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _lodash = __webpack_require__(292);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
 	var _commonContentWrapper = __webpack_require__(296);
 
 	var _commonContentWrapper2 = _interopRequireDefault(_commonContentWrapper);
@@ -45103,6 +45107,7 @@
 	    //rebindings
 	    this.updateTodoState = this.updateTodoState.bind(this);
 	    this.handleNewTodo = this.handleNewTodo.bind(this);
+	    this.handleDelete = this.handleDelete.bind(this);
 	  }
 
 	  _createClass(Index, [{
@@ -45121,7 +45126,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      console.log("render function");
 	      return _react2['default'].createElement(
 	        _commonContentWrapper2['default'],
 	        { wrapperClass: 'todos-wrapper', mainClass: 'todos-body', title: 'Kickass Todo List' },
@@ -45137,18 +45141,19 @@
 	        ),
 	        this.state.todos.map(function (todo, i) {
 	          var key = "todoItem-" + todo["_id"];
-	          return _react2['default'].createElement(_todoItemJsx2['default'], { key: key, todo: todo, onEdit: _this2.updateTodoState, onDelete: _this2.handleDelete, onCheck: _this2.updateTodoState });
+	          return _react2['default'].createElement(_todoItemJsx2['default'], { key: key, todo: todo, eventCallback: _this2.updateTodoState });
 	        })
 	      );
 	    }
 	    //render
 
-	    //todo: update todos state from store with single method.
 	  }, {
 	    key: 'updateTodoState',
 	    value: function updateTodoState() {
+	      var storedTodos = _lodash2['default'].clone(_storesTodoStoreJsx2['default'].getState().todos, true);
+
 	      this.setState({
-	        todos: _storesTodoStoreJsx2['default'].getState().todos
+	        todos: storedTodos.reverse()
 	      });
 	    }
 	  }, {
@@ -45173,12 +45178,7 @@
 	      var _this4 = this;
 
 	      _actionsTodoActionsJsx2['default'].post({
-	        data: {
-	          _id: -1,
-	          title: '',
-	          description: '',
-	          done: false
-	        }
+	        data: {}
 	      }, function (err) {
 	        if (!err) {
 	          _this4.updateTodoState();
@@ -45384,15 +45384,6 @@
 	      var toggleEditableState = this.toggleEditableState;
 	      var todoDescription = this.getDescriptionArea();
 
-	      /*<div>
-	       <IconButton >
-	       {this.state.editable ? <ContentSave onClick={this.handleSubmit} /> : <ContentCreate onClick={this.toggleEditableState}/>}
-	       </IconButton>
-	        <IconButton onClick={this.handleDelete} >
-	       <ActionDelete color={'red'} />
-	       </IconButton>
-	       </div>*/
-
 	      return _react2['default'].createElement(
 	        'div',
 	        { onMouseOver: this.toggleMenuOn, onMouseOut: this.toggleMenuOff },
@@ -45459,30 +45450,8 @@
 	  }, {
 	    key: 'toggleEditableState',
 	    value: function toggleEditableState() {
-	      console.log('toggle editable');
 	      this.setState({
 	        editable: !this.state.editable
-	      });
-	    }
-	  }, {
-	    key: 'toggleDone',
-	    value: function toggleDone() {
-	      var _this = this;
-
-	      var clone = _lodash2['default'].clone(this.state.todo, true);
-
-	      clone.done = !this.state.todo.done;
-	      _actionsTodoActionsJsx2['default'].put({
-	        params: {
-	          todoId: this.state.todo['_id']
-	        },
-	        data: clone
-	      }, function (err) {
-	        if (!err) {
-	          _this.props.onEdit();
-	        } else {
-	          console.error("Toggle Done Error: todoItem.jsx", err);
-	        }
 	      });
 	    }
 	  }, {
@@ -45502,9 +45471,31 @@
 	      var clone = _lodash2['default'].clone(this.state.todo, true);
 
 	      clone.description = e.target.value;
-
 	      this.setState({
 	        todo: clone
+	      });
+	    }
+
+	    /*FLUX MUTATORS*/
+	  }, {
+	    key: 'toggleDone',
+	    value: function toggleDone() {
+	      var _this = this;
+
+	      var clone = _lodash2['default'].clone(this.state.todo, true);
+
+	      clone.done = !this.state.todo.done;
+	      _actionsTodoActionsJsx2['default'].put({
+	        params: {
+	          todoId: this.state.todo['_id']
+	        },
+	        data: clone
+	      }, function (err) {
+	        if (!err) {
+	          _this.props.eventCallback();
+	        } else {
+	          console.error("Toggle Done Error: todoItem.jsx", err);
+	        }
 	      });
 	    }
 	  }, {
@@ -45520,7 +45511,7 @@
 	      }, function (err) {
 	        if (!err) {
 	          _this2.toggleEditableState();
-	          _this2.props.onEdit();
+	          _this2.props.eventCallback();
 	        } else {
 	          console.error("Data Submission Error: todoItem.jsx");
 	        }
@@ -45529,11 +45520,24 @@
 	  }, {
 	    key: 'handleDelete',
 	    value: function handleDelete() {
+	      var _this3 = this;
 
-	      this.props.onDelete(this.state.todo);
+	      _actionsTodoActionsJsx2['default'].del({
+	        params: {
+	          todoId: this.state.todo['_id']
+	        },
+	        data: this.state.todo
+	      }, function (err) {
+	        if (!err) {
+	          _this3.props.eventCallback();
+	        } else {
+	          console.error("Toggle Done Error: todoItem.jsx", err);
+	        }
+	      });
+	      //this.props.onDelete(this.state.todo);
 	    }
 
-	    //conditional renderers
+	    /* CONDITIONAL RENDERERS */
 	  }, {
 	    key: 'getTitleArea',
 	    value: function getTitleArea() {
@@ -45584,9 +45588,7 @@
 
 	TodoItem.propTypes = {
 	  todo: _react2['default'].PropTypes.object.isRequired,
-	  onEdit: _react2['default'].PropTypes.func.isRequired,
-	  onDelete: _react2['default'].PropTypes.func.isRequired,
-	  onCheck: _react2['default'].PropTypes.func.isRequired
+	  eventCallback: _react2['default'].PropTypes.func.isRequired
 	};
 
 	TodoItem.defaultProps = {
@@ -45726,7 +45728,6 @@
 
 	      return function (dispatch) {
 	        _superagent2['default'].post(route).send(data).set('Accept', 'application/json').end(function (err, res) {
-	          console.log("POST RES:", JSON.parse(res.text));
 	          var toDispatch = !err ? JSON.parse(res.text) : null;
 	          dispatch(toDispatch);
 	          callback(err);
@@ -45744,7 +45745,6 @@
 
 	      return function (dispatch) {
 	        _superagent2['default'].put(route).send(data).set('Accept', 'application/json').end(function (err, res) {
-	          console.log("PUT RES:", JSON.parse(res.text));
 	          var toDispatch = !err ? JSON.parse(res.text) : null;
 	          dispatch(toDispatch);
 	          callback(err);
@@ -48838,7 +48838,6 @@
 	    key: 'post',
 	    value: function post(todo) {
 	      var clone = _lodash2['default'].clone(this.state.todos, true);
-
 	      clone.push(todo);
 
 	      this.setState({

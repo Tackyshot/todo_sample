@@ -1,5 +1,6 @@
 "use strict";
 import React            from 'react';
+import _                from 'lodash';
 
 import ContentWrapper   from '../_common/contentWrapper/';
 import TodoItem         from './todoItem.jsx';
@@ -20,6 +21,7 @@ export default class Index extends React.Component{
     //rebindings
     this.updateTodoState  = this.updateTodoState.bind(this);
     this.handleNewTodo    = this.handleNewTodo.bind(this);
+    this.handleDelete     = this.handleDelete.bind(this);
   }
 
   componentWillMount(){
@@ -31,7 +33,6 @@ export default class Index extends React.Component{
   }
 
   render(){
-    console.log("render function");
     return (
       <ContentWrapper wrapperClass="todos-wrapper" mainClass="todos-body" title="Kickass Todo List">
           <div>
@@ -44,16 +45,17 @@ export default class Index extends React.Component{
           </div>
           {this.state.todos.map((todo, i) => {
             let key = "todoItem-" + todo["_id"];
-            return <TodoItem key={key} todo={todo} onEdit={this.updateTodoState} onDelete={this.handleDelete} onCheck={this.updateTodoState} />
+            return <TodoItem key={key} todo={todo} eventCallback={this.updateTodoState}/>
           })}
       </ContentWrapper>
     )
   }//render
 
-  //todo: update todos state from store with single method.
   updateTodoState(){
+    let storedTodos = _.clone(TodoStore.getState().todos, true);
+
     this.setState({
-      todos: TodoStore.getState().todos
+      todos: storedTodos.reverse()
     });
   }
 
@@ -72,12 +74,7 @@ export default class Index extends React.Component{
 
   handleNewTodo(e){
     TodoActions.post({
-      data:{
-        _id: -1,
-        title: '',
-        description: '',
-        done: false
-      }
+      data:{}
     }, (err)=>{
       if(!err){
         this.updateTodoState();

@@ -8,10 +8,6 @@ module.exports  = {
     let todoItem  = req.payload ? req.payload : null;
     let todoId    = req.params ? Number(req.params.todoId) : null;
 
-    console.log("Payload:", req.payload);
-
-    console.log("METHOD:", req.method);
-
     switch(req.method){
       case "get":
         res(todoList)
@@ -19,12 +15,18 @@ module.exports  = {
         break;
 
       case "post":
-        todoItem._id = todos.length + 1;
-        todos.push(todoItem);
+        let todo = {
+          _id: (todos[todos.length-1]._id + 1),
+          title: '',
+          description: '',
+          done: false
+        };
 
-        res(todoItem)
+        todos.push(todo);
+
+        res(todo)
           .type("application/json");
-        break;
+      break;
 
       case "put":
         todos.some((todo, i, arr)=>{
