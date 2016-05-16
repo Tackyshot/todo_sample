@@ -41,11 +41,20 @@ export default class TodoItem extends React.Component{
     this.handleDescriptionChange  = this.handleDescriptionChange.bind(this);
     this.handleSubmit             = this.handleSubmit.bind(this);
     this.handleDelete             = this.handleDelete.bind(this);
+    this.onKeyPress               = this.onKeyPress.bind(this);
   }
 
   componentWillMount(){
+    let todo      = this.props.todo;
+    let editable  = this.state.editable;
+
+    if((todo.title === '') && (todo.description === '') && (todo.done === false)){
+      editable = true;
+    }
+
     this.setState({
-      todo: this.props.todo
+      todo: todo,
+      editable: editable
     });
   }
 
@@ -94,6 +103,12 @@ export default class TodoItem extends React.Component{
 
   }//render
 
+  componentDidMount(){
+    if(this.state.editable){
+      return this.refs[`todoTextfield-${this.state.todo._id}`].focus();
+    }
+  }
+
   //event handlers
   toggleMenuOn(){
     this.setState({
@@ -130,6 +145,13 @@ export default class TodoItem extends React.Component{
     this.setState({
       todo: clone
     });
+  }
+
+  onKeyPress(e){
+    console.log('KeyPress', e.charCode);
+    if(e.charCode === 13){
+      return this.handleSubmit();
+    }
   }
 
   /*FLUX MUTATORS*/
@@ -191,7 +213,10 @@ export default class TodoItem extends React.Component{
     let style = Style.styles;
 
     if(this.state.editable){
-      return <TextField value={this.state.todo.title}
+      return <TextField ref={`todoTextfield-${this.state.todo._id}`}
+                        onKeyPress={this.onKeyPress}
+                        underlineShow={true}
+                        value={this.state.todo.title}
                         onChange={this.handleTitleChange}
                         fullWidth={true}
                         style={style.cbLabelStyle}/>
