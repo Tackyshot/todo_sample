@@ -28,6 +28,8 @@
   "devDependencies": {
     "babel-core": "5.8.34",
     "babel-loader": "5.4.0",
+    "chai-enzyme": "^0.4.2",
+    "enzyme": "^2.3.0",
     "webpack": "^1.12.6"
   }
 }
