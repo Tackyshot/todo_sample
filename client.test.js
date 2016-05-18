@@ -3,38 +3,30 @@ let fs    = require('fs');
 
 class ClientTest {
   constructor(){
-
-    this.findTestDirectories();
+    const testDirs = this.findTestDirectories();
   }
 
   findTestDirectories(){
-    //parses through FS and builds array of paths
+    //parses through FS and builds array of paths to each _test dir
     let testDirs = [];
 
-    let dirSearch = (path)=>{
-      fs.readdir(path, (err, files)=>{
-        //console.log("FILES", files);
-        files.forEach((file, index)=>{
-          //console.log("FILE,", file);
-          let stats = fs.lstatSync(`${path}/${file}`);
+    let dirSearch = (path, array)=>{
+      let files = fs.readdirSync(path);
+      files.forEach((file, index)=>{
+        let stats = fs.lstatSync(`${path}/${file}`);
 
-          if(stats.isDirectory() && file === '_test'){
-            //console.log("push");
-            testDirs.push(`${path}/${file}`);
-            console.log('testDirs', testDirs);
-          }
-          else if(stats.isDirectory() && file !== '_test'){
-            //console.log("recusion")
-            dirSearch(`${path}/${file}`);
-          }
-        });//forEach
-      });//readdir
-    }//dirSearch
+        if(stats.isDirectory() && file === '_test'){
+          array.push(`${path}/${file}/`)
+        }
+        else if(stats.isDirectory() && file !== '_test'){
+          dirSearch(`${path}/${file}`, array);
+        }
+      });//forEach
 
-    dirSearch('./client/components');
-    console.log("TEST DIRS:", testDirs);
+    };//dirSearch
+
+    dirSearch('./client/components', testDirs);
     return testDirs;
-
   }
 }//ClientTest
 
