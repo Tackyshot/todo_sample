@@ -1,10 +1,10 @@
 //empty test folder
 const Code = require('code');   // assertion library
-const Lab = require('lab');
-const lab = exports.lab = Lab.script();
 
-lab.test('returns true when 1 + 1 equals 2', (done) => {
+describe('math', () => {
+  it('returns true when 1 + 1 equals 2', ()=>{
+    Code.expect(1 + 1).to.equal(2);
+  });
 
-  Code.expect(1 + 1).to.equal(2);
-  done();
 });
+

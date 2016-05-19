@@ -1,31 +1,51 @@
 "use strict";
-let fs    = require('fs');
+let fs  = require('fs');
+let cp  = require('child_process');
+
 
 class ClientTest {
   constructor(){
-    const testDirs = this.findTestDirectories();
-    console.log('testDirs', testDirs);
+    console.log('DIRNAME:', __dirname);
+    return this.builderFn();
+  }
 
-    /*testDirs.forEach((dir, index)=>{
-      return require(`${dir}index.js`)
-    });*/
+  builderFn(){
+    let testDirs      = this.findTestDirectories();
+
+    this.checkTestReceiverDir((hasTestDir)=>{
+      if(hasTestDir){
+        testDirs.forEach((file, index)=>{
+          let split     = file.split('/');
+          let filename  = split[split.length -1];
+
+          //Copy test files to the test directory.
+          fs.createReadStream(file).pipe(fs.createWriteStream(`./.test/client/${index}-${filename}`));
+        });
+      }
+    })
+
   }
 
   findTestDirectories(){
     //parses through FS and builds array of paths to each _test dir
     let testDirs = [];
-    let firstFound = false; //TODO: remember to takeout first found when done testing
     let dirSearch = (path, array)=>{
-      let files = fs.readdirSync(path);
-      files.forEach((file, index)=>{
-        let stats = fs.lstatSync(`${path}/${file}`);
+      let dirs = fs.readdirSync(path);
+      dirs.forEach((subdir, index)=>{
+        let dirPath = `${path}/${subdir}`;
+        let stats   = fs.lstatSync(dirPath);
 
-        if(stats.isDirectory() && file === '_test' && !firstFound){ //TODO: remember to takeout first found when done testing
-          firstFound = true; //TODO: remember to takeout first found when done testing
-          array.push(`${path}/${file}/`);
+        if(stats.isDirectory() && subdir === '_test'){
+          let testFiles = fs.readdirSync(dirPath);
+
+          testFiles.forEach((file)=>{
+            let filePath  = `${path}/${subdir}/${file}`;
+
+            array.push(filePath);
+          });
         }
-        else if(stats.isDirectory() && file !== '_test'){
-          dirSearch(`${path}/${file}`, array);
+        else if(stats.isDirectory() && subdir !== '_test'){
+          dirSearch(dirPath, array);
         }
       });//forEach
 
@@ -34,6 +54,41 @@ class ClientTest {
     dirSearch('./client/components', testDirs);
     return testDirs;
   }
+
+  checkTestReceiverDir(cb){
+    let currentDir    = fs.readdirSync(__dirname);
+    let testDirExist  = false;
+
+    currentDir.forEach((dir, index)=>{
+      console.log(index);
+      let stats = fs.lstatSync(dir);
+
+      if(stats.isDirectory() && dir == '.test'){
+        let testDirs        = fs.readdirSync(`${__dirname}/.test`);
+        let clientDirExist  = false;
+
+        testDirs.forEach((subDir, i)=>{
+          let subStats = fs.lstatSync(subDir);
+
+          if(subStats.isDirectory() && subDir === 'client'){
+            clientDirExist = true;
+            return cb(testDirExist = true);
+          }
+          else if(i === (testDirs.length - 1) && !clientDirExist){
+            fs.mkdirSync('./.test/client');
+            return cb(testDirExist = true);
+          }
+        });
+
+      }
+      else if(index === (currentDir.length - 1) && !testDirExist){
+        fs.mkdirSync('./.test');
+        fs.mkdirSync('./.test/client');
+        fs.mkdirSync('./.test/server');
+        return cb(testDirExist = true);
+      }
+    });
+  }//checkTestReceiverDir
 }//ClientTest
 
-module.exports = new ClientTest();
+new ClientTest();

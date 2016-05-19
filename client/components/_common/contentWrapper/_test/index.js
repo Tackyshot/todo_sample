@@ -1,10 +1,20 @@
 //empty test folder
-const Code = require('code');   // assertion library
-const Lab = require('lab');
-const lab = exports.lab = Lab.script();
+import React          from 'react';
+import {shallow}      from 'enzyme'
+import Code           from 'code';   // assertion library
+//component to test
+import ContentWrapper from '../../client/components/_common/contentWrapper';
 
-lab.test('returns true when 1 + 1 equals 2', (done) => {
+describe('<ContentWrapper />', () => {
 
-  Code.expect(1 + 1).to.equal(2);
-  done();
+  it('should render children when passed in', ()=>{
+    const wrapper = shallow(
+      <ContentWrapper>
+        <div className="unique"></div>
+      </ ContentWrapper>
+    );
+
+    Code.expect(wrapper.contains(<div className="unique"></div>)).to.equal(true);
+  });
+
 });
