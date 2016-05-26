@@ -1,22 +1,19 @@
 "use strict";
-var webpack = require('webpack');
+const webpack = require('webpack');
+const path    = require('path');
 
 let webpackConfig = {
   entry: "./client/app.jsx",
   output: {
-    filename: "./server/assets/client/js/bundle.js"
+    path:path.resolve(__dirname, 'server/assets/client/js/'),
+    filename: "bundle.js"
   },
   module:{
     loaders: [
       {
-        test: /\.jsx$/,
+        test: /(\.jsx$|\.js$)/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel'
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel'
+        loaders: ['babel']
       }
     ]
   },
@@ -24,11 +21,7 @@ let webpackConfig = {
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("development")
-      },
-      "React": 'react',
-      "react": 'react',
-      'ReactDOM': 'react-dom',
-      "_": 'lodash'
+      }
     })
   ]
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import _     from 'lodash';
 import Style from './style/';
 
-export default class ExpandableWrapper extends React.Component{
+export default class Expandable extends React.Component{
   constructor(props, context){
     super(props, context);
 
@@ -56,7 +56,7 @@ export default class ExpandableWrapper extends React.Component{
 
 }//Wrapper
 
-ExpandableWrapper.defaultProps = {
+Expandable.defaultProps = {
   expanded: null,
   style: {},
 };

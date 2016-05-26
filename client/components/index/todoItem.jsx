@@ -1,28 +1,28 @@
 "use strict";
-import React            from 'react';
-import _                from 'lodash';
+import React, {Component} from 'react';
+import _                  from 'lodash';
 
-import Style            from './style/';
+import Style              from './style/';
 
-import TodoActions      from '../../actions/todo-actions.jsx';
-import TodoStore        from '../../stores/todo-store.jsx';
+import TodoActions        from '../../actions/todo-actions.jsx';
+import TodoStore          from '../../stores/todo-store.jsx';
 import {
   Expandable,
   ExpandableHeader,
   ExpandableContent
-  }                     from '../_common/expandable/';
-import HideableMenu     from './hideableMenu/'
+  }                       from '../_common/expandable/';
+import HideableMenu       from './hideableMenu/'
 //material components
-import Checkbox         from 'material-ui/lib/checkbox.js';
-import IconButton       from 'material-ui/lib/icon-button.js';
-import TextField        from 'material-ui/lib/text-field.js';
+import Checkbox           from 'material-ui/lib/checkbox.js';
+import IconButton         from 'material-ui/lib/icon-button.js';
+import TextField          from 'material-ui/lib/text-field.js';
 //svg icons
-import ContentCreate    from 'material-ui/lib/svg-icons/content/create.js';
-import ContentSave      from 'material-ui/lib/svg-icons/content/save.js';
-import ActionDelete     from 'material-ui/lib/svg-icons/action/delete.js';
+import ContentCreate      from 'material-ui/lib/svg-icons/content/create.js';
+import ContentSave        from 'material-ui/lib/svg-icons/content/save.js';
+import ActionDelete       from 'material-ui/lib/svg-icons/action/delete.js';
 
 
-export default class TodoItem extends React.Component{
+export default class TodoItem extends Component{
   constructor(props, context){
     super(props, context);
 
@@ -247,7 +247,7 @@ export default class TodoItem extends React.Component{
 
 TodoItem.propTypes = {
   todo: React.PropTypes.object.isRequired,
-  eventCallback: React.PropTypes.func.isRequired,
+  eventCallback: React.PropTypes.func.isRequired
 };
 
 TodoItem.defaultProps = {

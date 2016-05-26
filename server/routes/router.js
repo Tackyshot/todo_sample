@@ -1,7 +1,7 @@
 "use strict";
 const fs = require('fs');
 
-class Routes {
+/*class Routes {
   constructor(){
     this.state = {
       server: null,
@@ -36,7 +36,7 @@ class Routes {
 
   }
 
-}//Routes class
+}//Routes class*/
 
 let register = function (Server, options, next) {
 
