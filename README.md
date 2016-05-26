@@ -16,8 +16,17 @@ To get this todo list running in your own environment follow the following steps
   * `node app.js` 
 6. Finally, Navigate to the todo list via your browser by going to `http://localhost:3001`
 
+## Overview:
+
+Todo List has two main working directories
+
+ 1. [client](https://github.com/tackyshot/todo_sample/tree/master/docs/client.md)
+   `client` contains all files related to react components, flux stores, or any other scripts that are transpiled and bundled for use by the server.
+ 2. [server](https://github.com/tackyshot/todo_sample/tree/master/docs/server.md)
+   `server` contains all files and data related to starting and serving http requests.
+
+
 ## Notes:
 
 1. This example application does not use a database, but a plain text file loaded into the application memory at run time. It was done intentionally in an effort to make setup and execution quick and easy. Because the text file is loaded into memory at runtime and is mutated in memory only, it will not persist through server restarts.
 2. React router is used in this application. Even though there is only one route, the routes file can be easily edited to add more routes and features.
-3. Currently there is no testing environment, but it will be added at a later point in an effort to help introduce proper test practices in Node and React.

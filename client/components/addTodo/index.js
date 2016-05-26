@@ -13,7 +13,4 @@ export default class AddTodo extends React.Component{
 
   }
 
-  render(){
-
-  }
 }

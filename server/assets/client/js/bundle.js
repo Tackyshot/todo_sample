@@ -52011,9 +52011,6 @@
 	  _createClass(AddTodo, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {}
 	  }]);
 
 	  return AddTodo;

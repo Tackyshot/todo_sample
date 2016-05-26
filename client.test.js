@@ -5,7 +5,6 @@ let cp  = require('child_process');
 
 class ClientTest {
   constructor(){
-    console.log('DIRNAME:', __dirname);
     return this.builderFn();
   }
 
@@ -60,7 +59,6 @@ class ClientTest {
     let testDirExist  = false;
 
     currentDir.forEach((dir, index)=>{
-      console.log(index);
       let stats = fs.lstatSync(dir);
 
       if(stats.isDirectory() && dir == '.test'){

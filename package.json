@@ -4,7 +4,7 @@
   "description": "small todo application built with react / node to introduce node.js, JSX / React, and TDD",
   "main": "app.js",
   "scripts": {
-    "test": "node client.test.js; mocha ./.test/client --compilers js:babel-register --recursive",
+    "test": "node client.test.js; mocha ./.test/client --compilers js:babel-register --recursive --reporter nyan",
     "start": "node app.js"
   },
   "author": "dillon osman",
