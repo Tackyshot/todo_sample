@@ -22,6 +22,7 @@ class TodoStore {
     };
   }//constructor
 
+  //onSet -- when using this.bindActions() instead
   set(todos){
     if(todos !== null){
       this.setState({
@@ -30,6 +31,7 @@ class TodoStore {
     }
   }//set
 
+  //onPost -- when using this.bindActions() instead
   post(todo){
     let clone = _.clone(this.state.todos, true);
     clone.push(todo);
@@ -39,6 +41,7 @@ class TodoStore {
     });
   }//post
 
+  //onPut -- when using this.bindActions() instead
   put(todo){
     if(todo !== null) {
       let clone = _.clone(this.state.todos, true);
@@ -56,6 +59,7 @@ class TodoStore {
     }
   }//put
 
+  //onDel -- when using this.bindActions() instead
   del(todo){
     if(todo !== null) {
       let clone = _.clone(this.state.todos, true);
