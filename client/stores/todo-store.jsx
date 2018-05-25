@@ -10,6 +10,12 @@ class TodoStore {
       put: TodoActions.put,
       del: TodoActions.del
     });
+    
+    /*
+    * this.bindActions(TodoActions);
+    * -- calling this instead of `this.bindListeners()` and naming the Store class Methods to onSet, onPost, etc...
+    * -- automatically binds the Store Class Methods to the Actions Class Methods
+    */
 
     this.state = {
       todos: []
